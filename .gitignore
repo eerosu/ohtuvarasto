@@ -1,0 +1,8 @@
+#Ignore all .tmp files in project root
+/*.tmp
+
+#Ignore __pycache__ folders
+__pycache__/
+
+#Ignore .pytest_cache folders
+.pytest_cache/
