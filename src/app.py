@@ -104,12 +104,14 @@ def add_to_warehouse(warehouse_id):
             maara = float(request.form.get('maara', 0))
             
             varasto = Varasto(warehouse['tilavuus'], warehouse['saldo'])
+            old_saldo = varasto.saldo
             varasto.lisaa_varastoon(maara)
+            lisatty = varasto.saldo - old_saldo
             
             warehouse['saldo'] = varasto.saldo
             warehouses[warehouse_id] = warehouse
             save_warehouses(warehouses)
-            flash(f'Lisättiin {maara} varastoon', 'success')
+            flash(f'Lisättiin {lisatty} varastoon', 'success')
             return redirect(url_for('index'))
         except ValueError:
             flash('Virheellinen määrä', 'error')
@@ -145,4 +147,5 @@ def remove_from_warehouse(warehouse_id):
     return render_template('remove.html', warehouse=warehouse)
 
 if __name__ == '__main__':
+    # Development server only - use a production WSGI server like Gunicorn for production
     app.run(host='0.0.0.0', port=5000)
