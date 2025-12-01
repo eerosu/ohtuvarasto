@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Poista varasto - Varastojärjestelmä{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Poista varasto: {{ warehouse.name }}</h2>
+    
+    <div class="alert alert-error" style="margin-bottom: 2rem;">
+        <strong>Varoitus:</strong> Oletko varma, että haluat poistaa tämän varaston pysyvästi? Tätä toimintoa ei voi peruuttaa.
+    </div>
+    
+    <div class="warehouse-info" style="margin-bottom: 2rem;">
+        <div class="warehouse-info-item">
+            <span><strong>Nimi:</strong></span>
+            <span>{{ warehouse.name }}</span>
+        </div>
+        <div class="warehouse-info-item">
+            <span><strong>Saldo:</strong></span>
+            <span>{{ "%.2f"|format(warehouse.saldo) }}</span>
+        </div>
+        <div class="warehouse-info-item">
+            <span><strong>Tilavuus:</strong></span>
+            <span>{{ "%.2f"|format(warehouse.tilavuus) }}</span>
+        </div>
+    </div>
+    
+    <form method="POST" action="{{ url_for('delete_warehouse', warehouse_id=warehouse.id) }}">
+        <button type="submit" class="btn btn-danger">Kyllä, poista varasto</button>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Peruuta</a>
+    </form>
+</div>
+{% endblock %}

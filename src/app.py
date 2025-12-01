@@ -146,6 +146,27 @@ def remove_from_warehouse(warehouse_id):
     
     return render_template('remove.html', warehouse=warehouse)
 
+@app.route('/delete/<int:warehouse_id>', methods=['GET', 'POST'])
+def delete_warehouse(warehouse_id):
+    warehouses = get_warehouses()
+    if warehouse_id >= len(warehouses) or warehouse_id < 0:
+        flash('Varastoa ei löytynyt', 'error')
+        return redirect(url_for('index'))
+    
+    warehouse = warehouses[warehouse_id]
+    
+    if request.method == 'POST':
+        # Remove the warehouse from the list
+        warehouses.pop(warehouse_id)
+        # Re-index remaining warehouses
+        for i, w in enumerate(warehouses):
+            w['id'] = i
+        save_warehouses(warehouses)
+        flash(f'Varasto "{warehouse["name"]}" poistettu onnistuneesti', 'success')
+        return redirect(url_for('index'))
+    
+    return render_template('delete.html', warehouse=warehouse)
+
 if __name__ == '__main__':
     # Development server only - use a production WSGI server like Gunicorn for production
     app.run(host='0.0.0.0', port=5000)
