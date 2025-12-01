@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Etusivu - Varastojärjestelmä{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Varastot</h2>
+    
+    {% if warehouses %}
+        <div class="warehouse-grid">
+            {% for warehouse in warehouses %}
+                <div class="warehouse-card">
+                    <h3>{{ warehouse.name }}</h3>
+                    
+                    <div class="warehouse-info">
+                        <div class="warehouse-info-item">
+                            <span><strong>Saldo:</strong></span>
+                            <span>{{ "%.2f"|format(warehouse.saldo) }}</span>
+                        </div>
+                        <div class="warehouse-info-item">
+                            <span><strong>Tilavuus:</strong></span>
+                            <span>{{ "%.2f"|format(warehouse.tilavuus) }}</span>
+                        </div>
+                        <div class="warehouse-info-item">
+                            <span><strong>Vapaata tilaa:</strong></span>
+                            <span>{{ "%.2f"|format(warehouse.tilavuus - warehouse.saldo) }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        {% set percentage = (warehouse.saldo / warehouse.tilavuus * 100) if warehouse.tilavuus > 0 else 0 %}
+                        <div class="progress-fill" style="width: {{ percentage }}%">
+                            {{ "%.0f"|format(percentage) }}%
+                        </div>
+                    </div>
+                    
+                    <div class="warehouse-actions">
+                        <a href="{{ url_for('edit_warehouse', warehouse_id=warehouse.id) }}" class="btn btn-warning">Muokkaa</a>
+                        <a href="{{ url_for('add_to_warehouse', warehouse_id=warehouse.id) }}" class="btn btn-success">Lisää</a>
+                        <a href="{{ url_for('remove_from_warehouse', warehouse_id=warehouse.id) }}" class="btn btn-secondary">Poista sisältö</a>
+                        <a href="{{ url_for('delete_warehouse', warehouse_id=warehouse.id) }}" class="btn btn-danger">Poista varasto</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">📦</div>
+            <h3>Ei varastoja</h3>
+            <p>Aloita luomalla ensimmäinen varasto</p>
+            <br>
+            <a href="{{ url_for('new_warehouse') }}" class="btn btn-primary">Luo uusi varasto</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

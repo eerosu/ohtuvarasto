@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Uusi varasto - Varastojärjestelmä{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Luo uusi varasto</h2>
+    
+    <form method="POST" action="{{ url_for('new_warehouse') }}">
+        <div class="form-group">
+            <label for="name">Varaston nimi *</label>
+            <input type="text" id="name" name="name" required placeholder="Esim. Mehuvarasto">
+        </div>
+        
+        <div class="form-group">
+            <label for="tilavuus">Tilavuus *</label>
+            <input type="number" id="tilavuus" name="tilavuus" step="0.01" min="0.01" required placeholder="Esim. 100.0">
+        </div>
+        
+        <div class="form-group">
+            <label for="alku_saldo">Alkusaldo</label>
+            <input type="number" id="alku_saldo" name="alku_saldo" step="0.01" min="0" value="0" placeholder="Esim. 0.0">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Luo varasto</button>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Peruuta</a>
+    </form>
+</div>
+{% endblock %}

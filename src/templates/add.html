@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Lisää varastoon - Varastojärjestelmä{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Lisää varastoon: {{ warehouse.name }}</h2>
+    
+    <div class="warehouse-info" style="margin-bottom: 2rem;">
+        <div class="warehouse-info-item">
+            <span><strong>Nykyinen saldo:</strong></span>
+            <span>{{ "%.2f"|format(warehouse.saldo) }}</span>
+        </div>
+        <div class="warehouse-info-item">
+            <span><strong>Tilavuus:</strong></span>
+            <span>{{ "%.2f"|format(warehouse.tilavuus) }}</span>
+        </div>
+        <div class="warehouse-info-item">
+            <span><strong>Vapaata tilaa:</strong></span>
+            <span>{{ "%.2f"|format(warehouse.tilavuus - warehouse.saldo) }}</span>
+        </div>
+    </div>
+    
+    <form method="POST" action="{{ url_for('add_to_warehouse', warehouse_id=warehouse.id) }}">
+        <div class="form-group">
+            <label for="maara">Lisättävä määrä *</label>
+            <input type="number" id="maara" name="maara" step="0.01" min="0" required placeholder="Esim. 50.0">
+            <small style="color: #6c757d; display: block; margin-top: 0.5rem;">
+                Jos määrä ylittää vapaan tilan, varasto täytetään maksimiin.
+            </small>
+        </div>
+        
+        <button type="submit" class="btn btn-success">Lisää varastoon</button>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Peruuta</a>
+    </form>
+</div>
+{% endblock %}
