@@ -6,3 +6,7 @@ __pycache__/
 
 #Ignore .pytest_cache folders
 .pytest_cache/
+
+#Ignore Flask instance folder and session files
+instance/
+*.session
